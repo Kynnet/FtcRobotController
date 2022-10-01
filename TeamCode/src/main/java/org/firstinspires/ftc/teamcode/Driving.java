@@ -48,6 +48,11 @@ class MecanumTeleOp extends LinearOpMode {
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
             class pidTuner {
+                double p = 0;
+                double i = 0;
+                double d = 0;
+                private double previousError = 0;
+                private double previousTime = 0;
                 public double pid(double desiredPos, double currentPos, double slidesP, double slidesI, double slidesD, double maxI) {
                     double previousTime = 0;
 
@@ -57,13 +62,10 @@ class MecanumTeleOp extends LinearOpMode {
                     double previousError = currentError;
 
 
-                    double p;
-                    double i;
-                    double d;
 
-                    if (i == null) {
-                        i = 0;
-                    }
+
+
+
 
                     p = slidesP * currentError;
                     i += slidesI * (currentError * (currentTime - previousTime));
@@ -76,9 +78,10 @@ class MecanumTeleOp extends LinearOpMode {
 
                     d = slidesD * (currentError - previousError) / (currentTime - previousTime);
 
-                    return p + i + d;
-                    previousError = currentError;
+
+
                     previousTime = currentTime;
+                    return p + i + d;
                 }
             }
             pidTuner power = new pidTuner();
